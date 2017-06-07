@@ -65,6 +65,7 @@ define(function(require, exports, module) {
 		    if (!results[2]) return '';
 		    return decodeURIComponent(results[2].replace(/\+/g, " "));
 		}
+
         function initDefaultServers(baseURI) {
             if (options.getServers)
                 return options.getServers(init);
