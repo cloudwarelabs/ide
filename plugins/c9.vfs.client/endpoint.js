@@ -56,6 +56,15 @@ define(function(require, exports, module) {
         
         /***** Methods *****/
         
+		function getParameterByName(name, url) {
+		    if (!url) url = window.location.href;
+		    name = name.replace(/[\[\]]/g, "\\$&");
+		    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+		       results = regex.exec(url);
+		    if (!results) return null;
+		    if (!results[2]) return '';
+		    return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
         function initDefaultServers(baseURI) {
             if (options.getServers)
                 return options.getServers(init);
@@ -66,7 +75,7 @@ define(function(require, exports, module) {
                 var loc = require("url").parse(baseURI || document.baseURI || window.location.href);
                 var defaultServers = [{
                     //url: loc.protocol + "//" + loc.hostname + (loc.port ? ":" + loc.port : "") + "/vfs",
-                    url: loc.protocol + '//' + loc.hostname + (loc.port ? ":" + loc.port : "") + document.location.pathname + '/vfs',
+                    url: loc.protocol + '//' + loc.hostname + (loc.port ? ":" + loc.port : "") + '/vfsproxy/' + getParameterByName('token')  + '/vfs',
                     region: "default"
                 }];
                 servers = (urlServers || options.servers || defaultServers).map(function(server) {
